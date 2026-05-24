@@ -1,0 +1,43 @@
+name: carelite-local
+
+services:
+  redis:
+    image: redis:7-alpine
+    container_name: carelite-redis
+    ports:
+      - "16379:6379"
+    volumes:
+      - carelite-redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  mongo:
+    image: mongo:7
+    container_name: carelite-mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: carelite
+      MONGO_INITDB_ROOT_PASSWORD: carelite
+      MONGO_INITDB_DATABASE: carelite_events
+    ports:
+      - "27017:27017"
+    volumes:
+      - carelite-mongo-data:/data/db
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "mongosh",
+          "--quiet",
+          "--eval",
+          "db.adminCommand('ping').ok"
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  carelite-redis-data:
+  carelite-mongo-data:

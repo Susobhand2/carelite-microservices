@@ -4,9 +4,17 @@ server:
 spring:
   application:
     name: tenant-service
+  datasource:
+    url: jdbc:postgresql://${CARELITE_DB_HOST:localhost}:${CARELITE_DB_PORT:15432}/${CARELITE_DB_NAME:carelite}?sslmode=${CARELITE_DB_SSLMODE:disable}
+    username: ${CARELITE_DB_USERNAME:carelite_app}
+    password: ${CARELITE_DB_PASSWORD:carelite_app}
+  flyway:
+    baseline-on-migrate: true
+    enabled: true
 
 management:
   endpoints:
     web:
       exposure:
         include: health,info
+
