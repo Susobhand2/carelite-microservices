@@ -1,4 +1,8 @@
 package com.carelite.tenant.service.provisioning;
 
-public class TenantStorageProvisioner {
+import com.carelite.tenant.domain.Tenant;
+
+public interface TenantStorageProvisioner {
+
+  void provision(Tenant tenant);
 }

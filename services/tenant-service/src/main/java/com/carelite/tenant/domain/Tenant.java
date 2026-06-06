@@ -105,4 +105,23 @@ public class Tenant {
     this.status = TenantStatus.ACTIVE;
     this.provisioningStep = "ACTIVATE";
   }
+
+  public void suspend() {
+    this.status = TenantStatus.SUSPENDED;
+    this.provisioningStep = "SUSPEND";
+  }
+
+  public void retryProvisioning() {
+    this.status = TenantStatus.PROVISIONING;
+    this.provisioningStep = "RETRY";
+  }
+
+  public void markProvisioningStep(String step) {
+    this.provisioningStep = step;
+  }
+
+  public void failProvisioning(String step) {
+    this.status = TenantStatus.FAILED;
+    this.provisioningStep = step;
+  }
 }

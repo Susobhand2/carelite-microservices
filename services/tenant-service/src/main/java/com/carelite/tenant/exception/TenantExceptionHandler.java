@@ -76,6 +76,18 @@ public class TenantExceptionHandler {
         .body(ApiError.of("IDEMPOTENCY_CONFLICT", ex.getMessage(), null));
   }
 
+  @ExceptionHandler(TenantNotFoundException.class)
+  public ResponseEntity<ApiError> tenantNotFound(TenantNotFoundException ex) {
+    return ResponseEntity.status(HttpStatus.NOT_FOUND)
+        .body(ApiError.of("TENANT_NOT_FOUND", ex.getMessage(), null));
+  }
+
+  @ExceptionHandler(TenantLifecycleException.class)
+  public ResponseEntity<ApiError> tenantLifecycle(TenantLifecycleException ex) {
+    return ResponseEntity.status(HttpStatus.CONFLICT)
+        .body(ApiError.of("TENANT_LIFECYCLE_CONFLICT", ex.getMessage(), null));
+  }
+
   @ExceptionHandler(NoResourceFoundException.class)
   public ResponseEntity<ApiError> noResource(NoResourceFoundException ex) {
     return ResponseEntity.status(HttpStatus.NOT_FOUND)

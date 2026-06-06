@@ -4,10 +4,30 @@ server:
 spring:
   application:
     name: tenant-service
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${CARELITE_COGNITO_ISSUER_URI}
+  kafka:
+    bootstrap-servers: ${CARELITE_KAFKA_BOOTSTRAP_SERVERS:pkc-oxqxx9.us-east-1.aws.confluent.cloud:9092}
+    client-id: ${CARELITE_KAFKA_CLIENT_ID:tenant-service}
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    consumer:
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+    properties:
+      security.protocol: SASL_SSL
+      sasl.mechanism: PLAIN
+      sasl.jaas.config: "org.apache.kafka.common.security.plain.PlainLoginModule required username='${CARELITE_KAFKA_API_KEY:}' password='${CARELITE_KAFKA_API_SECRET:}';"
+      session.timeout.ms: 45000
+      spring.json.trusted.packages: com.carelite.events
   datasource:
-    url: jdbc:postgresql://${CARELITE_DB_HOST:localhost}:${CARELITE_DB_PORT:15432}/${CARELITE_DB_NAME:carelite}?sslmode=${CARELITE_DB_SSLMODE:disable}
-    username: ${CARELITE_DB_USERNAME:carelite_app}
-    password: ${CARELITE_DB_PASSWORD:carelite_app}
+    url: jdbc:postgresql://${CARELITE_DB_HOST:localhost}:${CARELITE_DB_PORT:15432}/${CARELITE_DB_NAME:carelite}?sslmode=${CARELITE_DB_SSLMODE:require}
+    username: ${CARELITE_DB_USERNAME}
+    password: ${CARELITE_DB_PASSWORD}
   flyway:
     baseline-on-migrate: true
     enabled: true
@@ -18,3 +38,13 @@ management:
       exposure:
         include: health,info
 
+
+carelite:
+  provisioning:
+    mode: ${CARELITE_PROVISIONING_MODE:noop}
+  aws:
+    region: ${AWS_REGION:us-east-1}
+    s3:
+      bucket: ${CARELITE_S3_BUCKET:}
+    cognito:
+      user-pool-id: ${CARELITE_COGNITO_USER_POOL_ID:}

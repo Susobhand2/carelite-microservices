@@ -8,7 +8,7 @@ come from the target environment.
 
 ## Services
 
-- Redis on `localhost:16379`
+- Redis on `localhost:6379`
 - MongoDB on `localhost:27017`
 
 ## Start

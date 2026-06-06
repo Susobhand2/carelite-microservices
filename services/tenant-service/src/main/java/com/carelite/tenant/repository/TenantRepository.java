@@ -9,5 +9,7 @@ import org.springframework.stereotype.Repository;
 public interface TenantRepository extends JpaRepository<Tenant, String> {
   boolean existsBySlug(String slug);
 
+  Optional<Tenant> findBySlug(String slug);
+
   Optional<Tenant> findByIdempotencyKey(String idempotencyKey);
 }
