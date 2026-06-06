@@ -1,0 +1,10 @@
+# Build outputs
+target/
+
+# IDE metadata
+.idea/
+*.iml
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
